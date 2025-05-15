@@ -16,6 +16,7 @@ import { Loader2, Mail, Trash2 } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { createGroup, CreateGroupState } from "@/app/home/groups/new/actions";
 import { toast } from "sonner";
+import { ScrollArea } from "./ui/scroll-area";
 
 interface Participant {
   name: string;
@@ -89,6 +90,7 @@ export default function NewGroupForm({
               required
             />
           </div>
+
           <h2 className="!mt-12">Participants</h2>
           {participants.map((participant, index) => (
             <div

@@ -22,7 +22,7 @@ export default function Header() {
               My Groups
             </Link>
             <Button asChild variant={"outline"}>
-              <Link href={"home/groups/new"}>New Group</Link>
+              <Link href={"/home/groups/new"}>New Group</Link>
             </Button>
           </nav>
         </div>
