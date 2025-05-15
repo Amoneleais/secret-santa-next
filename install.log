@@ -1,0 +1,8 @@
+[16:16:57 2025-05-13] FETCHING Version 2.40.7
+[16:16:57 2025-05-13] DOWNLOADING https://github.com/spicetify/cli/releases/download/v2.40.7/spicetify-2.40.7-linux-amd64.tar.gz
+[16:16:59 2025-05-13] EXTRACTING /home/amoneleais/.spicetify/spicetify.tar.gz
+[16:16:59 2025-05-13] SETTING EXECUTABLE PERMISSIONS TO /home/amoneleais/.spicetify/spicetify
+[16:16:59 2025-05-13] REMOVING /home/amoneleais/.spicetify/spicetify.tar.gz
+[16:16:59 2025-05-13] spicetify path already set in /home/amoneleais/.zshrc, continuing...
+[16:16:59 2025-05-13] spicetify v2.40.7 was installed successfully to /home/amoneleais/.spicetify
+[16:16:59 2025-05-13] Run 'spicetify --help' to get started
