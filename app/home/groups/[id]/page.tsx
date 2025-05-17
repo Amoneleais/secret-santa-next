@@ -2,6 +2,7 @@ import {
   TextRevealCard,
   TextRevealCardTitle,
 } from "@/components/text-reveal-card";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -19,6 +20,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { createClient } from "@/utils/supabase/server";
+import { Edit } from "lucide-react";
+import Link from "next/link";
 
 export default async function GroupIdPage({
   params,
@@ -64,6 +67,16 @@ export default async function GroupIdPage({
                 {data.name}
               </span>
             </CardTitle>
+            <div className="flex space-x-5">
+              <Link
+                href={`/home/groups/new?groupId=${groupId}`}
+                className="cursor-pointer"
+              >
+                <Button variant={"outline"}>
+                  <Edit />
+                </Button>
+              </Link>
+            </div>
           </div>
           <CardDescription>Group and participants infos</CardDescription>
         </CardHeader>

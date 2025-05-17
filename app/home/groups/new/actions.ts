@@ -16,37 +16,55 @@ export async function createGroup(
   const supabase = await createClient();
 
   const { data: authUser, error: authError } = await supabase.auth.getUser();
-
   if (authError) {
     return {
       success: false,
       message: "Hang tight — we're working on it. Try again in a moment.",
     };
   }
+  const names = formData.getAll("name") as string[];
+  const emails = formData.getAll("email") as string[];
+  const groupName = formData.get("group-name") as string;
+  const groupId = formData.get("group-id") as string;
 
-  const names = formData.getAll("name");
-  const emails = formData.getAll("email");
-  const groupName = formData.get("group-name");
+  let group;
 
-  const { data: newGroup, error } = await supabase
-    .from("groups")
-    .insert({
-      name: groupName,
-      owner_id: authUser?.user.id,
-    })
-    .select()
-    .single();
+  if (groupId) {
+    const { data: updatedGroup, error } = await supabase
+      .from("groups")
+      .update({ name: groupName })
+      .eq("id", groupId)
+      .select()
+      .single();
 
-  if (error) {
-    return {
-      success: false,
-      message: "Hang tight — we're working on it. Try again in a moment.",
-    };
+    if (error)
+      return {
+        success: false,
+        message: "Hang tight — we're working on it. Try again in a moment.",
+      };
+
+    await supabase.from("participants").delete().eq("group_id", groupId);
+
+    group = updatedGroup;
+  } else {
+    const { data: newGroup, error } = await supabase
+      .from("groups")
+      .insert({ name: groupName, owner_id: authUser?.user.id })
+      .select()
+      .single();
+
+    if (error)
+      return {
+        success: false,
+        message: "Hang tight — we're working on it. Try again in a moment.",
+      };
+
+    group = newGroup;
   }
 
   const participants = names.map((name, index) => ({
-    group_id: newGroup.id,
-    name: name,
+    group_id: group.id,
+    name,
     email: emails[index],
   }));
 
@@ -55,12 +73,11 @@ export async function createGroup(
     .insert(participants)
     .select();
 
-  if (errorParticipants) {
+  if (errorParticipants)
     return {
       success: false,
       message: "Hang tight — we're working on it. Try again in a moment.",
     };
-  }
 
   const drawnParticipants = drawGroup(createdParticipants);
 
@@ -68,25 +85,20 @@ export async function createGroup(
     .from("participants")
     .upsert(drawnParticipants);
 
-  if (errorDraw) {
+  if (errorDraw)
     return {
       success: false,
       message: "Hang tight — we're working on it. Try again in a moment.",
     };
-  }
 
   const { error: errorResend } = await sendEmailToParticipants(
     drawnParticipants,
-    groupName as string
+    groupName
   );
 
-  if (errorResend) {
-    return {
-      success: false,
-      message: errorResend,
-    };
-  }
-  redirect(`/home/groups/${newGroup.id}`);
+  if (errorResend) return { success: false, message: errorResend };
+
+  redirect(`/home/groups/${group.id}`);
 }
 
 type Participants = {

@@ -16,7 +16,6 @@ import { Loader2, Mail, Trash2 } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { createGroup, CreateGroupState } from "@/app/home/groups/new/actions";
 import { toast } from "sonner";
-import { ScrollArea } from "./ui/scroll-area";
 
 interface Participant {
   name: string;
@@ -25,14 +24,22 @@ interface Participant {
 
 export default function NewGroupForm({
   loggedUser,
+  groupId,
+  initialGroup,
+  initialParticipants,
 }: Readonly<{
   loggedUser: { id: string; email: string };
+  groupId?: { id?: string };
+  initialGroup?: { name: string };
+  initialParticipants?: Participant[];
 }>) {
-  const [participants, setParticipants] = useState<Participant[]>([
-    { name: "", email: loggedUser.email },
-  ]);
+  const [groupName, setGroupName] = useState(initialGroup?.name ?? "");
 
-  const [groupName, setGroupName] = useState("");
+  const [participants, setParticipants] = useState<Participant[]>(
+    initialParticipants?.length
+      ? initialParticipants
+      : [{ name: "", email: loggedUser.email }]
+  );
 
   const [state, formAction, pending] = useActionState<
     CreateGroupState,
@@ -72,13 +79,14 @@ export default function NewGroupForm({
   return (
     <Card className="mx-auto w-full max-w-2xl">
       <CardHeader>
-        <CardTitle>New Group</CardTitle>
+        <CardTitle>{groupId ? "Edit Group" : "New Group"}</CardTitle>
         <CardDescription>
           Get your friends in on the fun—send them an invite!
         </CardDescription>
       </CardHeader>
       <form action={formAction}>
         <CardContent className="space-y-4">
+          <Input type="hidden" name="group-id" value={groupId?.id || ""} />
           <div className="space-y-2">
             <Label htmlFor="group-name">Group name</Label>
             <Input
@@ -155,7 +163,9 @@ export default function NewGroupForm({
             className="flex items-center space-x-2 w-full md:w-auto"
           >
             <Mail className="w-3 h-3" />
-            Create group and send email invites
+            {groupId
+              ? "Update group and send email invites"
+              : "Create group and send email invites"}
             {pending && <Loader2 className="animate-spin" />}
           </Button>
         </CardFooter>
