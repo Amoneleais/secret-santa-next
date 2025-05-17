@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Secret Santa",
   description:
-    "🎄 Plan your Secret Santa today – the holidays just got a lot simpler.",
+    "🎄 Plan your Secret Santa today - the holidays just got a lot simpler.",
 };
 
 export default async function RootLayout({

@@ -3,9 +3,9 @@ import { createClient } from "@/utils/supabase/server";
 
 export default async function NewGroupPage({
   searchParams,
-}: {
+}: Readonly<{
   searchParams: { groupId?: string };
-}) {
+}>) {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
@@ -19,7 +19,7 @@ export default async function NewGroupPage({
     email: string;
   }
 
-  const groupId = (await searchParams).groupId;
+  const groupId = searchParams.groupId;
 
   let group = null;
   let participants: Participant[] = [];

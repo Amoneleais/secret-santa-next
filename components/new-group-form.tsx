@@ -86,7 +86,7 @@ export default function NewGroupForm({
       </CardHeader>
       <form action={formAction}>
         <CardContent className="space-y-4">
-          <Input type="hidden" name="group-id" value={groupId?.id || ""} />
+          <Input type="hidden" name="group-id" value={groupId?.id ?? ""} />
           <div className="space-y-2">
             <Label htmlFor="group-name">Group name</Label>
             <Input
