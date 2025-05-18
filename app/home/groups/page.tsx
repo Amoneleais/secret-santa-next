@@ -21,7 +21,7 @@ export default async function GroupsPage() {
     participants!inner(email)
     `
     )
-    .eq("participants.email", authUser?.user?.email);
+    .eq("participants.email", authUser.user?.email);
 
   if (error) {
     return <p>Oops! We couldn’t load the groups. Please try again.</p>;

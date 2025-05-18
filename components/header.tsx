@@ -1,6 +1,7 @@
-import { Gift, UsersRound } from "lucide-react";
+import { Gift, GiftIcon, UsersRound } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { Separator } from "./ui/separator";
 
 export default function Header() {
   return (
@@ -15,6 +16,13 @@ export default function Header() {
           </Link>
           <nav className="flex items-center space-x-4">
             <Link
+              href={"/home/gifts"}
+              className="text-foreground text-sm flex gap-2 items-center"
+            >
+              <GiftIcon className="w-4 h-4" />
+              My Gifts
+            </Link>
+            <Link
               href={"/home/groups"}
               className="text-foreground text-sm flex gap-2 items-center"
             >
@@ -24,6 +32,7 @@ export default function Header() {
             <Button asChild variant={"outline"}>
               <Link href={"/home/groups/new"}>New Group</Link>
             </Button>
+            <Separator orientation="vertical" />
           </nav>
         </div>
       </div>
